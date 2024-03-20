@@ -5,12 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {KeycloakAngularModule, KeycloakEventType, KeycloakService} from "keycloak-angular";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import {MatButton, MatButtonModule} from "@angular/material/button";
-import {MatDialogActions, MatDialogClose, MatDialogContent} from "@angular/material/dialog";
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatCardModule } from '@angular/material/card';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
+import {HttpClientModule} from "@angular/common/http";
 
 function initializeKeycloak(keycloak: KeycloakService) {
   keycloak.keycloakEvents$.subscribe({
@@ -23,7 +18,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:8080',
+        url: 'http://192.168.42.102:8080',
         realm: 'ecommerce',
         clientId: 'webadmin'
       },
@@ -43,15 +38,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     BrowserModule,
     AppRoutingModule,
     KeycloakAngularModule,
-    MatButton,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule
+    HttpClientModule
   ],
   providers: [
     {

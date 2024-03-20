@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {DashboardComponent} from "./dashboard/dashboard.component";
 import {AdminComponent} from "./admin.component";
+import {ProductCategoryComponent} from "./product-category/product-category.component";
 
 const routes: Routes = [
   { path: '', component: AdminComponent, children: [
-      {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-      {path: 'dashboard', component: DashboardComponent}
+      {path: '', redirectTo: 'product-category', pathMatch: 'full'},
+      {path: 'product-category', component: ProductCategoryComponent}
     ]}
 ];
 
