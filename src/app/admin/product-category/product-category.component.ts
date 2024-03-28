@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {CreateProductCategoryComponent} from "./create-product-category/create-product-category.component";
+import {KeycloakService} from "keycloak-angular";
 
 @Component({
   selector: 'app-product-category',
@@ -9,7 +10,7 @@ import {CreateProductCategoryComponent} from "./create-product-category/create-p
 })
 export class ProductCategoryComponent {
 
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog, private kcService: KeycloakService) {
   }
 
   openDialogCreateProduct() {
@@ -17,5 +18,9 @@ export class ProductCategoryComponent {
       width: '60%',
       disableClose: true
     });
+  }
+
+  doLogin() {
+    this.kcService.login()
   }
 }

@@ -18,7 +18,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'http://192.168.42.102:8080',
+        url: 'http://localhost:8080',
         realm: 'ecommerce',
         clientId: 'webadmin'
       },
@@ -26,7 +26,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
         onLoad: 'check-sso',
         silentCheckSsoRedirectUri:
           window.location.origin + '/assets/silent-check-sso.html'
-      }
+      },
+      bearerExcludedUrls: ['/assets']
     });
 }
 

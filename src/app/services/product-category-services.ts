@@ -10,6 +10,8 @@ export class ProductCategoryServices {
   }
 
   createProductCategory(formControlValue: any) {
-    console.log(formControlValue)
+    this.httpClient.get('http://localhost:9001/category?page=0&size=10').subscribe(value => {
+      console.log(value)
+    })
   }
 }
