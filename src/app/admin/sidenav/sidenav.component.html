@@ -7,7 +7,7 @@
     <mat-icon matListItemIcon>{{menuItem.icon}}</mat-icon>
     <span>{{menuItem.label}}</span>
   </a>
-  <a mat-list-item *ngIf="isLoggedIn()" (click)="doLogout()">
+  <a mat-list-item (click)="doLogout()">
     <mat-icon matListItemIcon>logout</mat-icon>
     <span>Đăng xuất</span>
   </a>

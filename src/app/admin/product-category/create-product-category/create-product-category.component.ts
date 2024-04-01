@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ProductCategoryServices} from "../../../services/product-category-services";
 
 @Component({
   selector: 'app-create-product-category',
   templateUrl: './create-product-category.component.html',
-  styleUrl: './create-product-category.component.css'
+  styleUrl: './create-product-category.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateProductCategoryComponent {
 
-  constructor(private productCategoryServices: ProductCategoryServices) {
+  constructor() {
   }
 
   productCategoryFormGroup = new FormGroup({
@@ -19,8 +20,8 @@ export class CreateProductCategoryComponent {
   isSubmitting = false;
 
   createProductCategory() {
+    console.log('fuck')
     this.isSubmitting = true;
     this.productCategoryFormGroup.disable();
-    this.productCategoryServices.createProductCategory(this.productCategoryFormGroup.getRawValue());
   }
 }

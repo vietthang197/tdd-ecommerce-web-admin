@@ -9,8 +9,8 @@ export class ProductCategoryServices {
   constructor(private httpClient: HttpClient) {
   }
 
-  createProductCategory(formControlValue: any) {
-    this.httpClient.get('http://localhost:9001/category?page=0&size=10').subscribe(value => {
+  getCategoryList() {
+    this.httpClient.get('http://localhost:9000/catalog-services/category?page=0&size=10').subscribe(value => {
       console.log(value)
     })
   }

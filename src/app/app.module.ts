@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import {KeycloakAngularModule, KeycloakEventType, KeycloakService} from "keycloak-angular";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {HttpClientModule} from "@angular/common/http";
+import {KeycloakAuthorizationService} from "./services/keycloak-authorization-service";
 
 function initializeKeycloak(keycloak: KeycloakService) {
   keycloak.keycloakEvents$.subscribe({
