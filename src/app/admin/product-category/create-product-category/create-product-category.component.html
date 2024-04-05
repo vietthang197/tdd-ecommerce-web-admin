@@ -1,10 +1,24 @@
 <h2 mat-dialog-title>Thêm mới loại sản phẩm</h2>
 <mat-dialog-content>
-  <form style="margin-top: 2rem" [formGroup]="productCategoryFormGroup">
-    <mat-form-field appearance="outline" color="accent">
-      <mat-label>Name</mat-label>
-      <input matInput formControlName="name" type="text">
-    </mat-form-field>
+  <form class="grid-container" style="margin-top: 2rem;" [formGroup]="productCategoryFormGroup">
+    <mat-grid-list cols="2" rowHeight="2:1">
+      <mat-form-field class="grid-item" appearance="outline" color="accent">
+        <mat-label>Tên loại sản phẩm</mat-label>
+        <input matInput formControlName="name" type="text">
+      </mat-form-field>
+      <mat-form-field class="grid-item" appearance="outline" color="accent">
+        <mat-label>Ngày kích hoạt</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="activeStartDate">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="grid-item" appearance="outline" color="accent">
+        <mat-label>Ngày kết thúc</mat-label>
+        <input matInput [matDatepicker]="picker2" formControlName="activeEndDate">
+        <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+    </mat-grid-list>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

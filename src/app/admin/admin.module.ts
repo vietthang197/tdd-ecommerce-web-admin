@@ -39,7 +39,7 @@ import {MatBadgeModule} from "@angular/material/badge";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
-import {MatRippleModule} from "@angular/material/core";
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatRippleModule} from "@angular/material/core";
 import {MatBottomSheetModule} from "@angular/material/bottom-sheet";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatTooltipModule} from "@angular/material/tooltip";
@@ -48,7 +48,8 @@ import {MatSortModule} from "@angular/material/sort";
 import {MatTableModule} from "@angular/material/table";
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
-
+import {provideNativeDateAdapter} from '@angular/material/core';
+import {MomentDateModule} from "@angular/material-moment-adapter";
 
 
 @NgModule({
@@ -114,9 +115,12 @@ import {HttpClientModule} from "@angular/common/http";
     MatPaginatorModule,
     MatSortModule,
     MatTableModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule,
+    MomentDateModule],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
-  ]
+  ], providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' }, // Set locale to 'en-GB' for dd/mm/yyyy format
+    provideNativeDateAdapter()]
 })
 export class AdminModule { }
