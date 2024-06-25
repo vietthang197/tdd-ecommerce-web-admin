@@ -47,7 +47,7 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatSortModule} from "@angular/material/sort";
 import {MatTableModule} from "@angular/material/table";
 import {ReactiveFormsModule} from "@angular/forms";
-import {HttpClientModule} from "@angular/common/http";
+import {} from "@angular/common/http";
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MomentDateModule} from "@angular/material-moment-adapter";
 
