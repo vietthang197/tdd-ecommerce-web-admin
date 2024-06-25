@@ -31,7 +31,7 @@ export class ProductCategoryComponent implements OnInit {
     await this.keycloakAuthorizationService.onReady();
     this.keycloakAuthorizationService.getPermission('catalog-services', [{
       id: 'CategoryResource'
-    }]).then((rpt) => {
+    }]).then((rpt: string) => {
       this.permissionList = this.keycloakAuthorizationService.getRptPermissions(rpt);
       this.canCreateCategory = this.hasPermission('CategoryResource', 'category:create', this.permissionList)
       this.canViewCategoryList = this.hasPermission('CategoryResource', 'category:view', this.permissionList);
@@ -39,13 +39,10 @@ export class ProductCategoryComponent implements OnInit {
   }
 
   getListProductCategory() {
-
-
     this.productCategoryService.getCategoryList()
   }
 
   openDialog() {
-    console.log('on fuck')
     this.dialog.open(CreateProductCategoryComponent, {
       width: '60%',
       disableClose: true

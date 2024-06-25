@@ -1,7 +1,8 @@
 import {Component, Injectable, OnInit} from "@angular/core";
-import { HttpClient } from "@angular/common/http";
 import {KeycloakService} from "keycloak-angular";
-import KeycloakAuthorization, { AuthorizationRequest, ResourcePermission, KeycloakAuthorizationPromise } from 'keycloak-js/dist/keycloak-authz';
+import {KeycloakResourceAccess} from "keycloak-js";
+import { AuthorizationRequest, ResourcePermission, KeycloakAuthorizationPromise } from 'keycloak-js/authz';
+import KeycloakAuthorization from 'keycloak-js/authz';
 import {jwtDecode} from "jwt-decode";
 
 
