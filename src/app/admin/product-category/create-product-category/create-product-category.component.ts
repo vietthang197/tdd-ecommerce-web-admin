@@ -15,14 +15,14 @@ export class CreateProductCategoryComponent {
 
   productCategoryFormGroup = new FormGroup({
     name: new FormControl(null, [Validators.required, Validators.max(100)]),
-    activeStartDate: new FormControl(null, [Validators.required, Validators.max(100)]),
-    activeEndDate: new FormControl(null, [Validators.required, Validators.max(100)])
+    activeStartDate: new FormControl(new Date(), [Validators.required, Validators.max(100)]),
+    activeEndDate: new FormControl(null, [Validators.max(100)])
   });
 
   isSubmitting = false;
 
   createProductCategory() {
-    console.log(this.productCategoryFormGroup.getRawValue())
+    console.log(this.productCategoryFormGroup.value)
     this.isSubmitting = true;
     this.productCategoryFormGroup.disable();
   }

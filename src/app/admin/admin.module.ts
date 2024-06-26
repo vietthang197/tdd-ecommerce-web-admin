@@ -50,6 +50,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {} from "@angular/common/http";
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MomentDateModule} from "@angular/material-moment-adapter";
+import { CategoryDataListComponent } from './product-category/category-data-list/category-data-list.component';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import {MomentDateModule} from "@angular/material-moment-adapter";
     AdminComponent,
     SidenavComponent,
     ProductCategoryComponent,
-    CreateProductCategoryComponent
+    CreateProductCategoryComponent,
+    CategoryDataListComponent
   ],
   imports: [
     CommonModule,

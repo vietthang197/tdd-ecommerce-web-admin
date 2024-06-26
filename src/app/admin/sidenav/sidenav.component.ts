@@ -28,7 +28,7 @@ export class SidenavComponent implements OnInit{
     this.menuItems = [
       {
         icon: 'dashboard',
-        label: 'Dashboard',
+        label: 'Loại sản phẩm',
         url: 'dasboard'
       }
     ]
