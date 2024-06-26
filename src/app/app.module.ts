@@ -1,4 +1,4 @@
-import {APP_INITIALIZER, NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule, provideExperimentalZonelessChangeDetection} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -45,6 +45,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
             deps: [KeycloakService]
         },
         provideAnimationsAsync(),
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withInterceptorsFromDi()),
+        provideExperimentalZonelessChangeDetection()
     ] })
 export class AppModule { }
