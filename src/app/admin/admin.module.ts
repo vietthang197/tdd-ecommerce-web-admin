@@ -1,4 +1,4 @@
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule, provideExperimentalZonelessChangeDetection} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID, NgModule, provideExperimentalZonelessChangeDetection} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {AdminRoutingModule} from "./admin-routing.module";
 import { AdminComponent } from './admin.component';
@@ -123,6 +123,7 @@ import { CategoryDataListComponent } from './product-category/category-data-list
     CUSTOM_ELEMENTS_SCHEMA
   ], providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' }, // Set locale to 'en-GB' for dd/mm/yyyy format
+    { provide: LOCALE_ID, useValue: 'vi-VN' },
     provideNativeDateAdapter(), provideExperimentalZonelessChangeDetection()]
 })
 export class AdminModule { }

@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, signal} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {CreateProductCategoryComponent} from "./create-product-category/create-product-category.component";
 import {KeycloakAuthorizationService} from "../../services/keycloak-authorization-service";
@@ -12,8 +12,8 @@ import {ProductCategoryServices} from "../../services/product-category-services"
 })
 export class ProductCategoryComponent implements OnInit {
   permissionList: Array<any> = [];
-  canCreateCategory = false;
-  canViewCategoryList = false;
+  canCreateCategory = signal(false);
+  canViewCategoryList = signal(false);
 
   constructor(private dialog: MatDialog, private keycloakAuthorizationService: KeycloakAuthorizationService, private productCategoryService: ProductCategoryServices) {
   }
@@ -33,8 +33,8 @@ export class ProductCategoryComponent implements OnInit {
       id: 'CategoryResource'
     }]).then((rpt: string) => {
       this.permissionList = this.keycloakAuthorizationService.getRptPermissions(rpt);
-      this.canCreateCategory = this.hasPermission('CategoryResource', 'category:create', this.permissionList)
-      this.canViewCategoryList = this.hasPermission('CategoryResource', 'category:view', this.permissionList);
+      this.canCreateCategory.set(this.hasPermission('CategoryResource', 'category:create', this.permissionList));
+      this.canViewCategoryList.set(this.hasPermission('CategoryResource', 'category:view', this.permissionList));
     }, () => {}, () => {});
   }
 

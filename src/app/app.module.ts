@@ -6,7 +6,10 @@ import { AppComponent } from './app.component';
 import {KeycloakAngularModule, KeycloakEventType, KeycloakService} from "keycloak-angular";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
-import {KeycloakAuthorizationService} from "./services/keycloak-authorization-service";
+import { registerLocaleData } from '@angular/common';
+import localeVi from '@angular/common/locales/vi';
+
+registerLocaleData(localeVi);
 
 function initializeKeycloak(keycloak: KeycloakService) {
   keycloak.keycloakEvents$.subscribe({

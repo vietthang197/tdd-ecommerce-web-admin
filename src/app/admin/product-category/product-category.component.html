@@ -1,8 +1,11 @@
+@if (canViewCategoryList()) {
+  <button mat-raised-button color="" (click)="getListProductCategory()">Lấy danh sách danh mục sản phẩm</button>
+}
 <div style="padding: 10px">
   <h1>Thông tin loại sản phẩm</h1>
 
+  @if (canCreateCategory()) {
+    <button mat-raised-button (click)="openDialog()">Thêm mới loại sản phẩm</button>
+  }
   <app-category-data-list/>
 </div>
-
-
-

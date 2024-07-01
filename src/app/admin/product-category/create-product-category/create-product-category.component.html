@@ -18,6 +18,10 @@
         <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker #picker2></mat-datepicker>
       </mat-form-field>
+      <mat-form-field class="grid-item" appearance="outline" color="accent">
+        <mat-label>Mô tả</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+      </mat-form-field>
     </mat-grid-list>
   </form>
 </mat-dialog-content>
