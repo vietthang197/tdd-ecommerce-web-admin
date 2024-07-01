@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {KeycloakService} from "keycloak-angular";
 
 @Component({
@@ -8,7 +8,7 @@ import {KeycloakService} from "keycloak-angular";
 })
 export class AdminComponent implements OnInit{
   openedSideNav: boolean;
-  username: any;
+  username = signal("");
 
   constructor(private keycloakService: KeycloakService) {
     this.openedSideNav = false;
@@ -20,6 +20,8 @@ export class AdminComponent implements OnInit{
 
   async ngOnInit(): Promise<void> {
     const userProfile = await this.keycloakService.loadUserProfile();
-    this.username = userProfile.username;
+    if (userProfile?.username) {
+      this.username.set(userProfile.username);
+    }
   }
 }
