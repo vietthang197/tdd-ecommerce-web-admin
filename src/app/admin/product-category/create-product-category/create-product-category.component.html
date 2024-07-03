@@ -7,6 +7,16 @@
         <input matInput formControlName="name" type="text">
       </mat-form-field>
       <mat-form-field class="grid-item" appearance="outline" color="accent">
+        <mat-label>URL (Slug)</mat-label>
+        <input matInput formControlName="url" type="text">
+      </mat-form-field>
+      <mat-form-field class="grid-item" appearance="outline" color="accent">
+        <mat-label>Mô tả</mat-label>
+        <textarea matInput formControlName="description" rows="3"></textarea>
+      </mat-form-field>
+    </mat-grid-list>
+    <mat-grid-list cols="2" rowHeight="2:1">
+      <mat-form-field class="grid-item" appearance="outline" color="accent">
         <mat-label>Ngày kích hoạt</mat-label>
         <input matInput [matDatepicker]="picker" formControlName="activeStartDate">
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -18,10 +28,7 @@
         <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker #picker2></mat-datepicker>
       </mat-form-field>
-      <mat-form-field class="grid-item" appearance="outline" color="accent">
-        <mat-label>Mô tả</mat-label>
-        <textarea matInput formControlName="description"></textarea>
-      </mat-form-field>
+
     </mat-grid-list>
   </form>
 </mat-dialog-content>
