@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component, Input, OnInit, ViewChild} from '@ang
 import {KeycloakService} from "keycloak-angular";
 import {Sidebar} from "primeng/sidebar";
 import {MenuItem, MenuItemCommandEvent} from 'primeng/api';
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -18,7 +19,7 @@ export class SidenavComponent implements OnInit{
 
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
 
-  constructor(private keycloakService: KeycloakService) {
+  constructor(private keycloakService: KeycloakService, private router: Router) {
   }
 
   isLoggedIn() {
@@ -65,5 +66,11 @@ export class SidenavComponent implements OnInit{
         }
       }
     ];
+  }
+
+  navigateTo(href: string) {
+    this.router.navigate([href]).finally(() => {
+      this.sidebarVisible = false;
+    })
   }
 }

@@ -4,11 +4,9 @@ import {AdminRoutingModule} from "./admin-routing.module";
 import { AdminComponent } from './admin.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { ProductCategoryComponent } from './product-category/product-category.component';
-import { CreateProductCategoryComponent } from './product-category/create-product-category/create-product-category.component';
 
 import {ReactiveFormsModule} from "@angular/forms";
 import {} from "@angular/common/http";
-import { CategoryDataListComponent } from './product-category/category-data-list/category-data-list.component';
 import {BadgeModule} from "primeng/badge";
 import {MenubarModule} from "primeng/menubar";
 import {AvatarModule} from "primeng/avatar";
@@ -23,14 +21,11 @@ import {MenuModule} from "primeng/menu";
 @NgModule({
   declarations: [
     AdminComponent,
-    SidenavComponent,
-    CreateProductCategoryComponent,
-    CategoryDataListComponent
+    SidenavComponent
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
-
     ReactiveFormsModule,
     BadgeModule,
     MenubarModule,

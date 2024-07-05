@@ -14,8 +14,13 @@ export class ProductCategoryServices {
   constructor(private httpClient: HttpClient) {
   }
 
-  getCategoryList(): Observable<ResponseDataPagination<ProductCategoryDto>> {
-    return this.httpClient.get<ResponseDataPagination<ProductCategoryDto>>('http://localhost:9000/catalog-services/category?page=0&size=10');
+  getCategoryList(page: number, size: number): Observable<ResponseDataPagination<ProductCategoryDto>> {
+    return this.httpClient.get<ResponseDataPagination<ProductCategoryDto>>('http://localhost:9000/catalog-services/category', {
+      params: {
+        page: page,
+        size: size
+      }
+    });
   }
 
   createCategory(req: CreateCategoryDto) {
