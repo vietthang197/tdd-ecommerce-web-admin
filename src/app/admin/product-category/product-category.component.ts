@@ -1,21 +1,32 @@
-import {ChangeDetectionStrategy, Component, OnInit, signal} from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
-import {CreateProductCategoryComponent} from "./create-product-category/create-product-category.component";
+import {ChangeDetectionStrategy, Component, OnInit, signal, ViewChild, WritableSignal} from '@angular/core';
 import {KeycloakAuthorizationService} from "../../services/keycloak-authorization-service";
 import {ProductCategoryServices} from "../../services/product-category-services";
+import {ButtonModule} from "primeng/button";
+import {CardModule} from "primeng/card";
+import {Sidebar, SidebarModule} from "primeng/sidebar";
+import {AvatarModule} from "primeng/avatar";
+import {Ripple} from "primeng/ripple";
+import {StyleClassModule} from "primeng/styleclass";
+import {MenubarModule} from "primeng/menubar";
+import {TableModule} from "primeng/table";
+import {ProductCategoryDto} from "../../dto/product-category-dto";
 
 
 @Component({
   selector: 'app-product-category',
   templateUrl: './product-category.component.html',
-  styleUrl: './product-category.component.css'
+  styleUrl: './product-category.component.css',
+  standalone: true,
+  imports: [ButtonModule, CardModule, SidebarModule, AvatarModule, Ripple, StyleClassModule, MenubarModule, TableModule]
 })
 export class ProductCategoryComponent implements OnInit {
   permissionList: Array<any> = [];
   canCreateCategory = signal(false);
   canViewCategoryList = signal(false);
 
-  constructor(private dialog: MatDialog, private keycloakAuthorizationService: KeycloakAuthorizationService, private productCategoryService: ProductCategoryServices) {
+  categoryList:WritableSignal<ProductCategoryDto[]> = signal([]);
+
+  constructor(private keycloakAuthorizationService: KeycloakAuthorizationService, private productCategoryService: ProductCategoryServices) {
   }
 
   hasPermission(resourceId:string, permission: string, permissionList: any[]) {
@@ -36,16 +47,13 @@ export class ProductCategoryComponent implements OnInit {
       this.canCreateCategory.set(this.hasPermission('CategoryResource', 'category:create', this.permissionList));
       this.canViewCategoryList.set(this.hasPermission('CategoryResource', 'category:view', this.permissionList));
     }, () => {}, () => {});
+
+    this.getListProductCategory();
   }
 
   getListProductCategory() {
-    this.productCategoryService.getCategoryList()
-  }
-
-  openDialog() {
-    this.dialog.open(CreateProductCategoryComponent, {
-      width: '60%',
-      disableClose: true
-    });
+    this.productCategoryService.getCategoryList().subscribe(value => {
+      this.categoryList.set(value.data.content);
+    })
   }
 }

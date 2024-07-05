@@ -46,7 +46,8 @@ export class CreateProductCategoryComponent implements OnInit {
       name: this.productCategoryFormGroup.controls['name'].value,
       activeStartDate: '',
       activeEndDate: '',
-      description: ''
+      description: this.productCategoryFormGroup.controls['description'].value,
+      url: this.productCategoryFormGroup.controls['url'].value
     }
 
     if (this.productCategoryFormGroup.controls['activeStartDate'].value !== null) {
@@ -57,7 +58,18 @@ export class CreateProductCategoryComponent implements OnInit {
       jsonRequest.activeEndDate = formatDate(this.productCategoryFormGroup.controls['activeEndDate'].value, 'dd/MM/YYYY', 'vi-VN') + ' 00:00:00';
     }
 
-    this.productCategoryService.createCategory(jsonRequest)
+    this.productCategoryService.createCategory(jsonRequest).subscribe({
+      next: value => {
+        console.log(value)
+      }, error: err => {
+        console.log(err)
+      }, complete: () => {
+        this.isSubmitting = false;
+        this.productCategoryFormGroup.reset()
+        this.productCategoryFormGroup.enable()
+        // this.snackBar.open('Thêm mới loại sản phẩm thành công', 'OK')
+      }
+    });
   }
 
   ngOnInit(): void {

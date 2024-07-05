@@ -1,11 +1,26 @@
-@if (canViewCategoryList()) {
-  <button mat-raised-button color="" (click)="getListProductCategory()">Lấy danh sách danh mục sản phẩm</button>
-}
-<div style="padding: 10px">
-  <h1>Thông tin loại sản phẩm</h1>
-
-  @if (canCreateCategory()) {
-    <button mat-raised-button (click)="openDialog()">Thêm mới loại sản phẩm</button>
-  }
-  <app-category-data-list/>
-</div>
+<p-card header="Product Category">
+  <p-button icon="pi pi-plus" label="Create" size="small"/>
+  <p-button icon="pi pi-trash" label="Delete" size="small" severity="danger" class="ml-2"/>
+</p-card>
+<p-card class="mt-2">
+  <p-table [value]="categoryList()" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Active StartDate</th>
+        <th>Active EndDate</th>
+        <th>URL</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-category>
+      <tr>
+        <td>{{ category.categoryId}}</td>
+        <td>{{ category.name }}</td>
+        <td>{{ category.activeStartDate }}</td>
+        <td>{{ category.activeEndDate }}</td>
+        <td>{{ category.url }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>

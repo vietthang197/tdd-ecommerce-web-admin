@@ -1,4 +1,7 @@
 export interface ProductCategoryDto {
-  id: string,
-  name: string
+  categoryId: string,
+  name: string,
+  activeStartDate: string,
+  activeEndDate: string,
+  url: string
 }

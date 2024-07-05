@@ -1,11 +1,8 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {KeycloakService} from "keycloak-angular";
+import {Sidebar} from "primeng/sidebar";
+import {MenuItem, MenuItemCommandEvent} from 'primeng/api';
 
-interface MenuItem {
-  icon: string,
-  label: string,
-  url: string
-}
 
 @Component({
   selector: 'app-sidenav',
@@ -14,8 +11,12 @@ interface MenuItem {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidenavComponent implements OnInit{
-  menuItems: MenuItem[] = [];
+
   @Input('username') username: string | undefined = '';
+
+  sidebarVisible = false;
+
+  @ViewChild('sidebarRef') sidebarRef!: Sidebar;
 
   constructor(private keycloakService: KeycloakService) {
   }
@@ -24,18 +25,45 @@ export class SidenavComponent implements OnInit{
     return this.keycloakService.isLoggedIn();
   }
 
-  async ngOnInit(): Promise<void> {
-    this.menuItems = [
-      {
-        icon: 'dashboard',
-        label: 'Loại sản phẩm',
-        url: 'dasboard'
-      }
-    ]
+  closeCallback(e: MouseEvent) {
+    this.sidebarRef.close(e);
   }
-
 
   async doLogout() {
     await this.keycloakService.logout('http://localhost:4200')
+  }
+
+
+  itemsMenu: MenuItem[] | undefined;
+  itemsUserMenu: MenuItem[] | undefined;
+
+  useSidebar() {}
+
+  ngOnInit() {
+
+    this.itemsMenu = [
+      {
+        label: 'Menu',
+        icon: 'pi pi-align-justify',
+        url: '',
+        command: event => {
+          this.sidebarVisible = true;
+        }
+      }
+    ];
+
+    this.itemsUserMenu = [
+      {
+        label: 'User info',
+        icon: 'pi pi-user',
+      },
+      {
+        label: 'Logout',
+        icon: 'pi pi-sign-out',
+        command: event => {
+          this.keycloakService.logout('http://localhost:4200')
+        }
+      }
+    ];
   }
 }
