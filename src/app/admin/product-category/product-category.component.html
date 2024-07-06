@@ -3,7 +3,7 @@
     <p-button icon="pi pi-plus" label="Create" size="small" (onClick)="openCreateProductCategoryDialog()" [loading]="loadingPreCreate()"/>
   }
   @if(canDeleteCategory()) {
-    <p-button icon="pi pi-trash" label="Delete" size="small" severity="danger" (onClick)="deleteListCategory()" class="ml-2" [disabled]="selectedCategoryProduct.length == 0"/>
+    <p-button icon="pi pi-trash" label="Delete" size="small" severity="danger" (onClick)="deleteListCategory($event)" class="ml-2" [disabled]="selectedCategoryProduct.length == 0"/>
   }
 </p-card>
 <p-card class="mt-2">

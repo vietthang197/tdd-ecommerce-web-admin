@@ -30,7 +30,7 @@ import {ErrorCode} from "../../utilities/error-code";
 import {ToastModule} from "primeng/toast";
 import {formatDate} from "@angular/common";
 import {fromIterable} from "rxjs/internal/observable/innerFrom";
-import {from, map, pipe, switchMap, toArray} from "rxjs";
+import {first, from, map, pipe, switchMap, toArray} from "rxjs";
 import {DeleteEntityDto} from "../../dto/delete-entity-dto";
 
 
@@ -109,8 +109,6 @@ export class ProductCategoryComponent implements OnInit {
   }
 
   getListProductCategory(first: number, rows: number) {
-    this.first.set(first);
-    this.rows.set(rows);
     this.productCategoryService.getCategoryList(first, rows).subscribe(value => {
       this.categoryList.set(value.data.content);
       this.totalRecords.set(value.data.totalElements);
@@ -119,12 +117,11 @@ export class ProductCategoryComponent implements OnInit {
 
   onPageChange(e: PaginatorState) {
     // @ts-ignore
-    this.getListProductCategory(e.first, e.rows);
+    this.getListProductCategory(e.page, e.rows);
   }
 
   closeProductCategoryDialog(event: Event) {
     event.stopPropagation();
-    alert('fuck')
     this.showDiaglogCreateCategory.set(false);
     this.productCategoryFormGroup.reset()
   }
@@ -150,10 +147,32 @@ export class ProductCategoryComponent implements OnInit {
       rejectButtonStyleClass: "p-button-sm p-button-text",
       acceptButtonStyleClass: "p-button-danger p-button-sm p-button-text",
       accept: () => {
-        console.log('Delete categoryId' + category.categoryId)
+        this.productCategoryService.deleteListCategory({
+          ids: [category.categoryId]
+        }).subscribe({
+          next: value => {
+            if (value.errCode === ErrorCode.GW200) {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: 'Successfully deleted',
+              });
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Delete Category Error with message: ' + value.errMessage
+              });
+            }
+          },
+          error: err => {
+
+          }, complete: () => {
+            this.getListProductCategory(this.first(), this.rows());
+          }
+        })
       },
       reject: () => {
-
       }
     });
   }
@@ -227,21 +246,49 @@ export class ProductCategoryComponent implements OnInit {
     })
   }
 
-  deleteListCategory() {
-    fromIterable(this.selectedCategoryProduct).pipe(map(value => value.categoryId), toArray())
-      .pipe(
-        switchMap(ids => this.productCategoryService.deleteListCategory({
-          ids: ids
-        }))
-      ).subscribe({
-      next: (value) => {
+  deleteListCategory(event: Event) {
 
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Bạn có muốn xoá bản ghi này?',
+      header: 'Cảnh báo',
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon: "none",
+      rejectIcon: "none",
+      rejectButtonStyleClass: "p-button-sm p-button-text",
+      acceptButtonStyleClass: "p-button-danger p-button-sm p-button-text",
+      accept: () => {
+        fromIterable(this.selectedCategoryProduct).pipe(map(value => value.categoryId), toArray())
+          .pipe(
+            switchMap(ids => this.productCategoryService.deleteListCategory({
+              ids: ids
+            }))
+          ).subscribe({
+          next: (value) => {
+            if (value.errCode === ErrorCode.GW200) {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: 'Successfully deleted',
+              });
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Delete Category Error with message: ' + value.errMessage
+              });
+            }
+          },
+          error: err => {
+
+          }, complete: () => {
+            this.getListProductCategory(this.first(), this.rows());
+          }
+        })
       },
-      error: err => {
-
-      }, complete: () => {
+      reject: () => {
 
       }
-    })
+    });
   }
 }

@@ -6,8 +6,7 @@ import {ProductCategoryComponent} from "./product-category/product-category.comp
 const routes: Routes = [
   { path: '', component: AdminComponent, children: [
       {path: '', redirectTo: 'product-category', pathMatch: 'full'},
-      {path: 'product-category', component: ProductCategoryComponent},
-      {path: 'product-fuck', component: ProductCategoryComponent}
+      {path: 'product-category', component: ProductCategoryComponent}
     ]}
 ];
 
