@@ -241,6 +241,7 @@ export class ProductCategoryComponent implements OnInit {
         this.messageService.add({severity: 'error', summary: 'Error', detail: 'Create Category Error'});
       },
       complete: () => {
+        this.loadingSaveForm.set(false);
         this.getListProductCategory(this.first(), this.rows());
       }
     })
