@@ -13,6 +13,9 @@ import {ProductCategoryDto} from "../../dto/product-category-dto";
 import {PaginatorModule, PaginatorState} from "primeng/paginator";
 import {DialogModule} from "primeng/dialog";
 import {InputTextModule} from "primeng/inputtext";
+import {DividerModule} from "primeng/divider";
+import {CalendarModule} from "primeng/calendar";
+import {InputGroupModule} from "primeng/inputgroup";
 
 
 @Component({
@@ -20,7 +23,7 @@ import {InputTextModule} from "primeng/inputtext";
   templateUrl: './product-category.component.html',
   styleUrl: './product-category.component.css',
   standalone: true,
-  imports: [ButtonModule, CardModule, SidebarModule, AvatarModule, Ripple, StyleClassModule, MenubarModule, TableModule, PaginatorModule, DialogModule, InputTextModule]
+  imports: [ButtonModule, CardModule, SidebarModule, AvatarModule, Ripple, StyleClassModule, MenubarModule, TableModule, PaginatorModule, DialogModule, InputTextModule, DividerModule, CalendarModule, InputGroupModule]
 })
 export class ProductCategoryComponent implements OnInit {
   permissionList: Array<any> = [];
@@ -33,7 +36,10 @@ export class ProductCategoryComponent implements OnInit {
   categoryList:WritableSignal<ProductCategoryDto[]> = signal([]);
 
   //crud
-  showDiaglogCreateCategory = true;
+  showDiaglogCreateCategory = false;
+  activeStartDate: Date[] | undefined;
+  activeEndDate: Date[] | undefined;
+  disableCategoryUrl = true;
 
   constructor(private keycloakAuthorizationService: KeycloakAuthorizationService, private productCategoryService: ProductCategoryServices) {
   }

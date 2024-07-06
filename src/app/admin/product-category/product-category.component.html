@@ -52,14 +52,37 @@
           [style]="{ width: '50vw' }"
           [draggable]="false"
           [resizable]="false">
-  <div class="flex align-items-center gap-3 mb-3">
-    <label for="username" class="font-semibold w-6rem">Name</label>
-    <input pInputText id="username" class="flex-auto p-inputtext-sm" autocomplete="off" size="small"/>
+
+  <div class="formgrid grid">
+    <div class="field col">
+      <label for="categoryName">Name</label>
+      <input id="categoryName" type="text" pInputText class="p-inputtext-sm text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+    </div>
+    <div class="field col-6">
+      <label for="categoryURL">URL</label>
+      <p-inputGroup class="p-inputtext-sm">
+        <input id="categoryURL" type="text" pInputText class="p-inputtext-sm" [disabled]="disableCategoryUrl"/>
+        <button type="button" pButton [icon]="disableCategoryUrl ? 'pi pi-pencil' : 'pi pi-check'" size="small" [class]="disableCategoryUrl ? 'p-button-success' : ''" (click)="disableCategoryUrl = !disableCategoryUrl"></button>
+      </p-inputGroup>
+    </div>
+    <div class="field col-6">
+      <label for="activeStartDate" class="block mb-2">Active StartDate</label>
+      <p-calendar id="activeStartDate" appendTo="body" showSeconds="true" class="p-inputtext-sm"
+        inputId="calendar-24h"
+        [(ngModel)]="activeStartDate" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+        [showTime]="true"
+        [hourFormat]="'24'"/>
+    </div>
+    <div class="field col-6">
+      <label for="activeEndDate" class="block mb-2">Active EndDate</label>
+      <p-calendar id="activeEndDate" appendTo="body" showSeconds="true" class="p-inputtext-sm"
+                  inputId="calendar-24h"
+                  [(ngModel)]="activeEndDate" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+                  [showTime]="true"
+                  [hourFormat]="'24'"/>
+    </div>
   </div>
-  <div class="flex align-items-center gap-3 mb-5">
-    <label for="email" class="font-semibold w-6rem">Active startDate</label>
-    <input pInputText id="email" class="flex-auto p-inputtext-sm" autocomplete="off"/>
-  </div>
+
   <div class="flex justify-content-end gap-2">
     <p-button label="Cancel" severity="danger" (click)="showDiaglogCreateCategory = false" size="small"/>
     <p-button label="Save" (click)="showDiaglogCreateCategory = false" size="small"/>
