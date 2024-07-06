@@ -20,6 +20,7 @@ import {ProgressBarModule} from "primeng/progressbar";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {Utilities} from "../../utilities/utilities";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {SecurityUtilities} from "../../utilities/security-utilities";
 
 
 @Component({
@@ -58,14 +59,7 @@ export class ProductCategoryComponent implements OnInit {
   constructor(private keycloakAuthorizationService: KeycloakAuthorizationService, private productCategoryService: ProductCategoryServices) {
   }
 
-  hasPermission(resourceId:string, permission: string, permissionList: any[]) {
-    for (let item of this.permissionList) {
-      if (item?.rsname == resourceId && item.scopes?.includes(permission)) {
-        return true;
-      }
-    }
-    return false;
-  }
+
 
   async ngOnInit(): Promise<void> {
     await this.keycloakAuthorizationService.onReady();
@@ -73,10 +67,10 @@ export class ProductCategoryComponent implements OnInit {
       id: 'CategoryResource'
     }]).then((rpt: string) => {
       this.permissionList = this.keycloakAuthorizationService.getRptPermissions(rpt);
-      this.canCreateCategory.set(this.hasPermission('CategoryResource', 'category:create', this.permissionList));
-      this.canViewCategoryList.set(this.hasPermission('CategoryResource', 'category:view', this.permissionList));
-      this.canEditCategory.set(this.hasPermission('CategoryResource', 'category:edit', this.permissionList));
-      this.canDeleteCategory.set(this.hasPermission('CategoryResource', 'category:delete', this.permissionList));
+      this.canCreateCategory.set(SecurityUtilities.hasPermission('CategoryResource', 'category:create', this.permissionList));
+      this.canViewCategoryList.set(SecurityUtilities.hasPermission('CategoryResource', 'category:view', this.permissionList));
+      this.canEditCategory.set(SecurityUtilities.hasPermission('CategoryResource', 'category:edit', this.permissionList));
+      this.canDeleteCategory.set(SecurityUtilities.hasPermission('CategoryResource', 'category:delete', this.permissionList));
     }, () => {}, () => {});
 
     this.getListProductCategory(this.first, this.rows);
