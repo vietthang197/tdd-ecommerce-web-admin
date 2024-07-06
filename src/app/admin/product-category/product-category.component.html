@@ -48,6 +48,7 @@
                 pRipple
                 icon="pi pi-trash"
                 severity="danger"
+                (onClick)="deleteItem(category, $event)"
                 [rounded]="true"
                 [outlined]="true"
               />
@@ -71,18 +72,18 @@
 
   <form [formGroup]="productCategoryFormGroup">
     <div class="formgrid grid">
-      <div class="field col">
+      <div class="field md:col-6 sm:col-12">
         <label for="categoryName">Name</label>
         <input id="categoryName" formControlName="categoryName" name="categoryName" (change)="updateCategoryUrl()" type="text" pInputText class="p-inputtext-sm text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
       </div>
-      <div class="field col-6">
+      <div class="field md:col-6 sm:col-12">
         <label for="categoryURL">URL</label>
         <p-inputGroup class="p-inputtext-sm">
           <input id="categoryURL" formControlName="categoryUrl" name="categoryUrl" type="text" pInputText class="p-inputtext-sm"/>
           <button type="button" pButton [icon]="disableCategoryUrl ? 'pi pi-pencil' : 'pi pi-check'" size="small" [class]="disableCategoryUrl ? 'p-button-success' : ''" (click)="toggleEditCategoryUrl()"></button>
         </p-inputGroup>
       </div>
-      <div class="field col-6">
+      <div class="field md:col-6 sm:col-12">
         <label for="activeStartDate" class="block mb-2">Active StartDate</label>
         <p-calendar id="activeStartDate" name="activeStartDate" appendTo="body" showSeconds="true" class="p-inputtext-sm"
                     inputId="activeStartDate"
@@ -90,7 +91,7 @@
                     [showTime]="true" dateFormat="dd/mm/yy"
                     [hourFormat]="'24'"/>
       </div>
-      <div class="field col-6">
+      <div class="field md:col-6 sm:col-12">
         <label for="activeEndDate" class="block mb-2">Active EndDate</label>
         <p-calendar id="activeEndDate" name="activeEndDate" appendTo="body" showSeconds="true" class="p-inputtext-sm"
                     inputId="activeEndDate" dateFormat="dd/mm/yy"
@@ -106,3 +107,4 @@
     <p-button label="Save" (click)="saveProductCategory()" size="small"/>
   </div>
 </p-dialog>
+<p-confirmDialog />

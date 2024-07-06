@@ -21,6 +21,9 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {Utilities} from "../../utilities/utilities";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {SecurityUtilities} from "../../utilities/security-utilities";
+import {ConfirmationService, MessageService} from "primeng/api";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {ToastModule} from "primeng/toast";
 
 
 @Component({
@@ -28,7 +31,10 @@ import {SecurityUtilities} from "../../utilities/security-utilities";
   templateUrl: './product-category.component.html',
   styleUrl: './product-category.component.css',
   standalone: true,
-  imports: [ButtonModule, CardModule, SidebarModule, AvatarModule, Ripple, StyleClassModule, MenubarModule, TableModule, PaginatorModule, DialogModule, InputTextModule, DividerModule, CalendarModule, InputGroupModule, ProgressBarModule, ProgressSpinnerModule, ReactiveFormsModule]
+  imports: [ButtonModule, CardModule, SidebarModule, AvatarModule, Ripple, StyleClassModule, MenubarModule,
+    TableModule, PaginatorModule, DialogModule, InputTextModule, DividerModule, CalendarModule,
+    InputGroupModule, ProgressBarModule, ProgressSpinnerModule, ReactiveFormsModule, ConfirmDialogModule],
+  providers: [ConfirmationService]
 })
 export class ProductCategoryComponent implements OnInit {
   permissionList: Array<any> = [];
@@ -56,7 +62,8 @@ export class ProductCategoryComponent implements OnInit {
     description: new FormControl(null)
   });
 
-  constructor(private keycloakAuthorizationService: KeycloakAuthorizationService, private productCategoryService: ProductCategoryServices) {
+  constructor(private keycloakAuthorizationService: KeycloakAuthorizationService, private productCategoryService: ProductCategoryServices,
+              private confirmationService: ConfirmationService) {
   }
 
 
@@ -114,5 +121,24 @@ export class ProductCategoryComponent implements OnInit {
       this.productCategoryFormGroup.controls['categoryUrl'].disable();
       this.disableCategoryUrl = true;
     }
+  }
+
+  deleteItem(category: ProductCategoryDto, event: Event) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Bạn có muốn xoá bản ghi này?',
+      header: 'Cảnh báo',
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon:"none",
+      rejectIcon:"none",
+      rejectButtonStyleClass:"p-button-sm p-button-text",
+      acceptButtonStyleClass: "p-button-danger p-button-sm p-button-text",
+      accept: () => {
+        console.log('Delete categoryId' + category.categoryId)
+      },
+      reject: () => {
+
+      }
+    });
   }
 }
