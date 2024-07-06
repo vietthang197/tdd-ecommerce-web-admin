@@ -3,5 +3,7 @@ export interface ProductCategoryDto {
   name: string,
   activeStartDate: string,
   activeEndDate: string,
-  url: string
+  url: string,
+  metaTitle: string,
+  metaDescription: string
 }

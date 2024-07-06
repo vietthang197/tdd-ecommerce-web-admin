@@ -1,9 +1,9 @@
 <p-card header="Product Category">
   @if(canCreateCategory()) {
-    <p-button icon="pi pi-plus" label="Create" size="small" (onClick)="showDiaglogCreateCategory = true"/>
+    <p-button icon="pi pi-plus" label="Create" size="small" (onClick)="openCreateProductCategoryDialog()" [loading]="loadingPreCreate()"/>
   }
   @if(canDeleteCategory()) {
-    <p-button icon="pi pi-trash" label="Delete" size="small" severity="danger" class="ml-2" [disabled]="selectedCategoryProduct.length == 0"/>
+    <p-button icon="pi pi-trash" label="Delete" size="small" severity="danger" (onClick)="deleteListCategory()" class="ml-2" [disabled]="selectedCategoryProduct.length == 0"/>
   }
 </p-card>
 <p-card class="mt-2">
@@ -19,6 +19,8 @@
           <th>Active StartDate</th>
           <th>Active EndDate</th>
           <th>URL</th>
+          <th>Meta Title</th>
+          <th>Meta Description</th>
           <th>Action</th>
         </tr>
       </ng-template>
@@ -32,6 +34,8 @@
           <td>{{ category.activeStartDate }}</td>
           <td>{{ category.activeEndDate }}</td>
           <td>{{ category.url }}</td>
+          <td>{{ category.metaTitle }}</td>
+          <td>{{ category.metaDescription }}</td>
           <td>
             @if(canEditCategory()) {
               <p-button
@@ -59,13 +63,13 @@
     </p-table>
     <p-paginator
       (onPageChange)="onPageChange($event)"
-      [first]="first"
-      [rows]="rows"
-      [totalRecords]="totalRecords"
+      [first]="first()"
+      [rows]="rows()"
+      [totalRecords]="totalRecords()"
       [rowsPerPageOptions]="[10, 20, 30]" />
   }
 </p-card>
-<p-dialog header="Add new product category" [modal]="true" [(visible)]="showDiaglogCreateCategory" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+<p-dialog header="Add new product category" [modal]="true" [visible]="showDiaglogCreateCategory()" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
           [style]="{ width: '50vw' }"
           [draggable]="false" closable="false"
           [resizable]="false">
@@ -73,14 +77,14 @@
   <form [formGroup]="productCategoryFormGroup">
     <div class="formgrid grid">
       <div class="field md:col-6 sm:col-12">
-        <label for="categoryName">Name</label>
-        <input id="categoryName" formControlName="categoryName" name="categoryName" (change)="updateCategoryUrl()" type="text" pInputText class="p-inputtext-sm text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+        <label for="name">Name</label>
+        <input id="name" formControlName="name" name="name" type="text" pInputText class="p-inputtext-sm text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
       </div>
       <div class="field md:col-6 sm:col-12">
-        <label for="categoryURL">URL</label>
+        <label for="url">URL</label>
         <p-inputGroup class="p-inputtext-sm">
-          <input id="categoryURL" formControlName="categoryUrl" name="categoryUrl" type="text" pInputText class="p-inputtext-sm"/>
-          <button type="button" pButton [icon]="disableCategoryUrl ? 'pi pi-pencil' : 'pi pi-check'" size="small" [class]="disableCategoryUrl ? 'p-button-success' : ''" (click)="toggleEditCategoryUrl()"></button>
+          <input id="url" formControlName="url" name="url" type="text" pInputText class="p-inputtext-sm"/>
+          <p-button type="button" [icon]="disableCategoryUrl() ? 'pi pi-pencil' : 'pi pi-check'" size="small" [class]="disableCategoryUrl() ? '' : 'p-button-success'" (onClick)="toggleEditCategoryUrl()"></p-button>
         </p-inputGroup>
       </div>
       <div class="field md:col-6 sm:col-12">
@@ -99,12 +103,32 @@
                     [showTime]="true"
                     [hourFormat]="'24'"/>
       </div>
+      <div class="field md:col-6 sm:col-12">
+        <label for="parentCategory" class="block mb-2">Parent Category</label>
+        <p-autoComplete id="parentCategory"
+          formControlName="parentCategory" class="p-inputtext-sm" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" [suggestions]="filteredParentCategory"
+          (completeMethod)="filterParentCategory($event)" field="name"
+        />
+      </div>
+      <div class="field md:col-6 sm:col-12">
+        <label for="description">Description</label>
+        <input id="description" formControlName="description" name="description"  type="text" pInputText class="p-inputtext-sm text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+      </div>
+      <div class="field md:col-6 sm:col-12">
+        <label for="metaTitle">Meta Title</label>
+        <input id="metaTitle" formControlName="metaTitle" name="metaTitle"  type="text" pInputText class="p-inputtext-sm text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+      </div>
+      <div class="field md:col-6 sm:col-12">
+        <label for="metaDescription">Meta Description</label>
+        <input id="metaDescription" formControlName="metaDescription" name="metaDescription"  type="text" pInputText class="p-inputtext-sm text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+      </div>
     </div>
   </form>
 
   <div class="flex justify-content-end gap-2">
-    <p-button label="Cancel" severity="danger" (click)="closeProductCategoryDialog()" size="small"/>
-    <p-button label="Save" (click)="saveProductCategory()" size="small"/>
+    <p-button label="Cancel" severity="danger" (onClick)="closeProductCategoryDialog($event)" size="small" [disabled]="loadingSaveForm()"/>
+    <p-button label="Save" (onClick)="saveProductCategory()" size="small" [loading]="loadingSaveForm()"/>
   </div>
 </p-dialog>
+<p-toast/>
 <p-confirmDialog />

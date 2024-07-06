@@ -1,5 +1,5 @@
 export interface ResponseData<T> {
   errCode: string;
-  errMessage: string;
-  data: T;
+  errMessage: string | null;
+  data: T | null;
 }
