@@ -74,6 +74,11 @@ export class ProductCategoryComponent implements OnInit {
     }, () => {}, () => {});
 
     this.getListProductCategory(this.first, this.rows);
+
+    this.productCategoryFormGroup.controls['categoryName'].valueChanges.subscribe(value => {
+      // @ts-ignore
+      this.productCategoryFormGroup.controls['categoryUrl'].setValue(Utilities.toSlug(value));
+    })
   }
 
   getListProductCategory(first: number, rows: number) {
@@ -98,6 +103,7 @@ export class ProductCategoryComponent implements OnInit {
 
   closeProductCategoryDialog() {
     this.showDiaglogCreateCategory = false;
+    this.productCategoryFormGroup.reset()
   }
 
   toggleEditCategoryUrl() {
