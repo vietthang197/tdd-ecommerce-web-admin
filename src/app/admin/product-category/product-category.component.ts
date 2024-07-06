@@ -16,6 +16,10 @@ import {InputTextModule} from "primeng/inputtext";
 import {DividerModule} from "primeng/divider";
 import {CalendarModule} from "primeng/calendar";
 import {InputGroupModule} from "primeng/inputgroup";
+import {ProgressBarModule} from "primeng/progressbar";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {Utilities} from "../../utilities/utilities";
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 
 
 @Component({
@@ -23,23 +27,33 @@ import {InputGroupModule} from "primeng/inputgroup";
   templateUrl: './product-category.component.html',
   styleUrl: './product-category.component.css',
   standalone: true,
-  imports: [ButtonModule, CardModule, SidebarModule, AvatarModule, Ripple, StyleClassModule, MenubarModule, TableModule, PaginatorModule, DialogModule, InputTextModule, DividerModule, CalendarModule, InputGroupModule]
+  imports: [ButtonModule, CardModule, SidebarModule, AvatarModule, Ripple, StyleClassModule, MenubarModule, TableModule, PaginatorModule, DialogModule, InputTextModule, DividerModule, CalendarModule, InputGroupModule, ProgressBarModule, ProgressSpinnerModule, ReactiveFormsModule]
 })
 export class ProductCategoryComponent implements OnInit {
   permissionList: Array<any> = [];
   canCreateCategory = signal(false);
   canViewCategoryList = signal(false);
+  canEditCategory = signal(false);
+  canDeleteCategory = signal(false);
 
   first = 0;
   rows = 10;
   totalRecords = 0;
   categoryList:WritableSignal<ProductCategoryDto[]> = signal([]);
+  selectedCategoryProduct = [];
 
   //crud
   showDiaglogCreateCategory = false;
-  activeStartDate: Date[] | undefined;
-  activeEndDate: Date[] | undefined;
   disableCategoryUrl = true;
+
+  // form
+  productCategoryFormGroup = new FormGroup({
+    categoryName: new FormControl(null, [Validators.required, Validators.max(100)]),
+    categoryUrl: new FormControl({value: null, disabled: true}, [Validators.required]),
+    activeStartDate: new FormControl(undefined, [Validators.required, Validators.max(100)]),
+    activeEndDate: new FormControl(undefined, [Validators.max(100)]),
+    description: new FormControl(null)
+  });
 
   constructor(private keycloakAuthorizationService: KeycloakAuthorizationService, private productCategoryService: ProductCategoryServices) {
   }
@@ -61,6 +75,8 @@ export class ProductCategoryComponent implements OnInit {
       this.permissionList = this.keycloakAuthorizationService.getRptPermissions(rpt);
       this.canCreateCategory.set(this.hasPermission('CategoryResource', 'category:create', this.permissionList));
       this.canViewCategoryList.set(this.hasPermission('CategoryResource', 'category:view', this.permissionList));
+      this.canEditCategory.set(this.hasPermission('CategoryResource', 'category:edit', this.permissionList));
+      this.canDeleteCategory.set(this.hasPermission('CategoryResource', 'category:delete', this.permissionList));
     }, () => {}, () => {});
 
     this.getListProductCategory(this.first, this.rows);
@@ -76,5 +92,27 @@ export class ProductCategoryComponent implements OnInit {
   onPageChange(e: PaginatorState) {
     // @ts-ignore
     this.getListProductCategory(e.first, e.rows);
+  }
+
+  updateCategoryUrl() {
+    // this.categoryUrl = Utilities.toSlug(this.categoryName);
+  }
+
+  saveProductCategory() {
+
+  }
+
+  closeProductCategoryDialog() {
+    this.showDiaglogCreateCategory = false;
+  }
+
+  toggleEditCategoryUrl() {
+    if (this.disableCategoryUrl) {
+      this.productCategoryFormGroup.controls['categoryUrl'].enable();
+      this.disableCategoryUrl = false;
+    } else {
+      this.productCategoryFormGroup.controls['categoryUrl'].disable();
+      this.disableCategoryUrl = true;
+    }
   }
 }

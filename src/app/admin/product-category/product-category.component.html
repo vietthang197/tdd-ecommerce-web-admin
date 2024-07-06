@@ -1,90 +1,108 @@
 <p-card header="Product Category">
-  <p-button icon="pi pi-plus" label="Create" size="small" (onClick)="showDiaglogCreateCategory = true"/>
-  <p-button icon="pi pi-trash" label="Delete" size="small" severity="danger" class="ml-2"/>
+  @if(canCreateCategory()) {
+    <p-button icon="pi pi-plus" label="Create" size="small" (onClick)="showDiaglogCreateCategory = true"/>
+  }
+  @if(canDeleteCategory()) {
+    <p-button icon="pi pi-trash" label="Delete" size="small" severity="danger" class="ml-2" [disabled]="selectedCategoryProduct.length == 0"/>
+  }
 </p-card>
 <p-card class="mt-2">
-  <p-table [value]="categoryList()" [tableStyle]="{ 'min-width': '50rem' }">
-    <ng-template pTemplate="header">
-      <tr>
-        <th>STT</th>
-        <th>Name</th>
-        <th>Active StartDate</th>
-        <th>Active EndDate</th>
-        <th>URL</th>
-        <th>Action</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-category  let-rowIndex="rowIndex">
-      <tr>
-        <td>{{ rowIndex + 1 }}</td>
-        <td>{{ category.name }}</td>
-        <td>{{ category.activeStartDate }}</td>
-        <td>{{ category.activeEndDate }}</td>
-        <td>{{ category.url }}</td>
-        <td>
-          <p-button
-            pRipple
-            icon="pi pi-pencil"
-            class="mr-2"
-            [rounded]="true"
-            [outlined]="true"
-            severity="success"
-             />
-          <p-button
-            pRipple
-            icon="pi pi-trash"
-            severity="danger"
-            [rounded]="true"
-            [outlined]="true"
-            />
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-  <p-paginator
-    (onPageChange)="onPageChange($event)"
-    [first]="first"
-    [rows]="rows"
-    [totalRecords]="totalRecords"
-    [rowsPerPageOptions]="[10, 20, 30]" />
+  @if(canViewCategoryList()) {
+    <p-table [value]="categoryList()" [tableStyle]="{ 'min-width': '50rem' }" [(selection)]="selectedCategoryProduct">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 4rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th>STT</th>
+          <th>Name</th>
+          <th>Active StartDate</th>
+          <th>Active EndDate</th>
+          <th>URL</th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-category  let-rowIndex="rowIndex">
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="category"></p-tableCheckbox>
+          </td>
+          <td>{{ rowIndex + 1 }}</td>
+          <td>{{ category.name }}</td>
+          <td>{{ category.activeStartDate }}</td>
+          <td>{{ category.activeEndDate }}</td>
+          <td>{{ category.url }}</td>
+          <td>
+            @if(canEditCategory()) {
+              <p-button
+                pRipple
+                icon="pi pi-pencil"
+                class="mr-2"
+                [rounded]="true"
+                [outlined]="true"
+                severity="success"
+              />
+            }
+            @if (canDeleteCategory()) {
+              <p-button
+                pRipple
+                icon="pi pi-trash"
+                severity="danger"
+                [rounded]="true"
+                [outlined]="true"
+              />
+            }
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="first"
+      [rows]="rows"
+      [totalRecords]="totalRecords"
+      [rowsPerPageOptions]="[10, 20, 30]" />
+  }
 </p-card>
 <p-dialog header="Add new product category" [modal]="true" [(visible)]="showDiaglogCreateCategory" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
           [style]="{ width: '50vw' }"
-          [draggable]="false"
+          [draggable]="false" closable="false"
           [resizable]="false">
 
-  <div class="formgrid grid">
-    <div class="field col">
-      <label for="categoryName">Name</label>
-      <input id="categoryName" type="text" pInputText class="p-inputtext-sm text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+  <form [formGroup]="productCategoryFormGroup">
+    <div class="formgrid grid">
+      <div class="field col">
+        <label for="categoryName">Name</label>
+        <input id="categoryName" formControlName="categoryName" name="categoryName" (change)="updateCategoryUrl()" type="text" pInputText class="p-inputtext-sm text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+      </div>
+      <div class="field col-6">
+        <label for="categoryURL">URL</label>
+        <p-inputGroup class="p-inputtext-sm">
+          <input id="categoryURL" formControlName="categoryUrl" name="categoryUrl" type="text" pInputText class="p-inputtext-sm"/>
+          <button type="button" pButton [icon]="disableCategoryUrl ? 'pi pi-pencil' : 'pi pi-check'" size="small" [class]="disableCategoryUrl ? 'p-button-success' : ''" (click)="toggleEditCategoryUrl()"></button>
+        </p-inputGroup>
+      </div>
+      <div class="field col-6">
+        <label for="activeStartDate" class="block mb-2">Active StartDate</label>
+        <p-calendar id="activeStartDate" name="activeStartDate" appendTo="body" showSeconds="true" class="p-inputtext-sm"
+                    inputId="activeStartDate"
+                    formControlName="activeStartDate" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+                    [showTime]="true" dateFormat="dd/mm/yy"
+                    [hourFormat]="'24'"/>
+      </div>
+      <div class="field col-6">
+        <label for="activeEndDate" class="block mb-2">Active EndDate</label>
+        <p-calendar id="activeEndDate" name="activeEndDate" appendTo="body" showSeconds="true" class="p-inputtext-sm"
+                    inputId="activeEndDate" dateFormat="dd/mm/yy"
+                    formControlName="activeEndDate" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+                    [showTime]="true"
+                    [hourFormat]="'24'"/>
+      </div>
     </div>
-    <div class="field col-6">
-      <label for="categoryURL">URL</label>
-      <p-inputGroup class="p-inputtext-sm">
-        <input id="categoryURL" type="text" pInputText class="p-inputtext-sm" [disabled]="disableCategoryUrl"/>
-        <button type="button" pButton [icon]="disableCategoryUrl ? 'pi pi-pencil' : 'pi pi-check'" size="small" [class]="disableCategoryUrl ? 'p-button-success' : ''" (click)="disableCategoryUrl = !disableCategoryUrl"></button>
-      </p-inputGroup>
-    </div>
-    <div class="field col-6">
-      <label for="activeStartDate" class="block mb-2">Active StartDate</label>
-      <p-calendar id="activeStartDate" appendTo="body" showSeconds="true" class="p-inputtext-sm"
-        inputId="calendar-24h"
-        [(ngModel)]="activeStartDate" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
-        [showTime]="true"
-        [hourFormat]="'24'"/>
-    </div>
-    <div class="field col-6">
-      <label for="activeEndDate" class="block mb-2">Active EndDate</label>
-      <p-calendar id="activeEndDate" appendTo="body" showSeconds="true" class="p-inputtext-sm"
-                  inputId="calendar-24h"
-                  [(ngModel)]="activeEndDate" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
-                  [showTime]="true"
-                  [hourFormat]="'24'"/>
-    </div>
-  </div>
+  </form>
 
   <div class="flex justify-content-end gap-2">
-    <p-button label="Cancel" severity="danger" (click)="showDiaglogCreateCategory = false" size="small"/>
-    <p-button label="Save" (click)="showDiaglogCreateCategory = false" size="small"/>
+    <p-button label="Cancel" severity="danger" (click)="closeProductCategoryDialog()" size="small"/>
+    <p-button label="Save" (click)="saveProductCategory()" size="small"/>
   </div>
 </p-dialog>
