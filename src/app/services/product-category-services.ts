@@ -37,4 +37,8 @@ export class ProductCategoryServices {
       body: req
     });
   }
+
+  getDetailCategory(id: string | null) {
+    return this.httpClient.get<ResponseData<ProductCategoryDto>>('http://localhost:9000/catalog-services/category/detail/' + id);
+  }
 }

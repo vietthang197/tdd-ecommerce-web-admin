@@ -37,16 +37,24 @@
           <td>{{ category.metaTitle }}</td>
           <td>{{ category.metaDescription }}</td>
           <td>
-            @if(canEditCategory()) {
-              <p-button
-                pRipple
-                icon="pi pi-pencil"
-                class="mr-2"
-                [rounded]="true"
-                [outlined]="true"
-                severity="success"
-              />
-            }
+            <p-button
+              pRipple
+              icon="pi pi-eye"
+              class="mr-2"
+              [rounded]="true"
+              [outlined]="true"
+              (onClick)="redirectEditPage(category)"
+            />
+<!--            @if(canEditCategory()) {-->
+<!--              <p-button-->
+<!--                pRipple-->
+<!--                icon="pi pi-pencil"-->
+<!--                class="mr-2"-->
+<!--                [rounded]="true"-->
+<!--                [outlined]="true"-->
+<!--                severity="success"-->
+<!--              />-->
+<!--            }-->
             @if (canDeleteCategory()) {
               <p-button
                 pRipple

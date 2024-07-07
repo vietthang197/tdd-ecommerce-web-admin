@@ -32,6 +32,7 @@ import {formatDate} from "@angular/common";
 import {fromIterable} from "rxjs/internal/observable/innerFrom";
 import {first, from, map, pipe, switchMap, toArray} from "rxjs";
 import {DeleteEntityDto} from "../../dto/delete-entity-dto";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -48,7 +49,7 @@ import {DeleteEntityDto} from "../../dto/delete-entity-dto";
 export class ProductCategoryComponent implements OnInit {
 
   constructor(private keycloakAuthorizationService: KeycloakAuthorizationService, private productCategoryService: ProductCategoryServices,
-              private confirmationService: ConfirmationService, private messageService: MessageService) {
+              private confirmationService: ConfirmationService, private messageService: MessageService, private router: Router) {
   }
 
   permissionList: Array<any> = [];
@@ -75,7 +76,7 @@ export class ProductCategoryComponent implements OnInit {
     activeStartDate: new FormControl<Date | null>(null, [Validators.required]),
     activeEndDate: new FormControl<Date | null>(null),
     description: new FormControl(null, [Validators.max(100)]),
-    parentCategory: new FormControl<object | null>(null),
+    parentCategory: new FormControl<ProductCategoryDto | null>(null),
     metaTitle: new FormControl(null, [Validators.max(100)]),
     metaDescription: new FormControl(null, [Validators.max(100)]),
   });
@@ -216,7 +217,8 @@ export class ProductCategoryComponent implements OnInit {
       name: this.productCategoryFormGroup.controls['name'].value,
       url: this.productCategoryFormGroup.controls['url'].value,
       metaTitle: this.productCategoryFormGroup.controls['metaTitle'].value,
-      metaDescription: this.productCategoryFormGroup.controls['metaDescription'].value
+      metaDescription: this.productCategoryFormGroup.controls['metaDescription'].value,
+      parentCategoryId: this.productCategoryFormGroup.controls['parentCategory'].value?.categoryId
     }
     this.loadingSaveForm.set(true);
     this.productCategoryService.createCategory(request).subscribe({
@@ -291,5 +293,9 @@ export class ProductCategoryComponent implements OnInit {
 
       }
     });
+  }
+
+  redirectEditPage(category: ProductCategoryDto) {
+    this.router.navigate(['/admin/product-category/' + category.categoryId])
   }
 }

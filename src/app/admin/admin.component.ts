@@ -7,15 +7,12 @@ import {KeycloakService} from "keycloak-angular";
   styleUrl: './admin.component.css'
 })
 export class AdminComponent implements OnInit{
-  openedSideNav: boolean;
   username = signal("");
 
   constructor(private keycloakService: KeycloakService) {
-    this.openedSideNav = false;
   }
 
   toggleDrawer() {
-    this.openedSideNav = !this.openedSideNav;
   }
 
   async ngOnInit(): Promise<void> {

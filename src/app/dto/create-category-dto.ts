@@ -5,5 +5,6 @@ export interface CreateCategoryDto {
   description: string | null | undefined,
   url: string | null | undefined,
   metaTitle: string | null | undefined,
-  metaDescription: string | null | undefined
+  metaDescription: string | null | undefined,
+  parentCategoryId: string | null | undefined
 }

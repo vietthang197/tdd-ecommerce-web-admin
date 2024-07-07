@@ -4,6 +4,9 @@ export interface ProductCategoryDto {
   activeStartDate: string,
   activeEndDate: string,
   url: string,
+  description: string,
   metaTitle: string,
-  metaDescription: string
+  metaDescription: string,
+  parentCategory: ProductCategoryDto,
+  attributes: Map<string, string>
 }

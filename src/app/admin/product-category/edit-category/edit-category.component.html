@@ -1,0 +1,71 @@
+@if(loadingDetail()) {
+  <p-skeleton styleClass="mb-2 mt-5" />
+  <p-skeleton width="10rem" styleClass="mb-2" />
+  <p-skeleton width="5rem" styleClass="mb-2" />
+  <p-skeleton height="2rem" styleClass="mb-2" />
+  <p-skeleton width="10rem" height="4rem" />
+} @else {
+  @if(canEditCategory()) {
+    <p-card header="Detail Product Category">
+      <p-button icon="pi pi-undo" label="Quay lại" size="small" (onClick)="backAllCategoryPage($event)"/>
+      <p-button icon="pi pi-arrow-down" label="Update" size="small" severity="success"  class="ml-2"/>
+    </p-card>
+
+    <p-card>
+      <form [formGroup]="productCategoryFormGroup">
+        <div class="formgrid grid">
+          <div class="field md:col-4 sm:col-12">
+            <label for="name">Name</label>
+            <input id="name" formControlName="name" name="name" type="text" pInputText class="p-inputtext-sm text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+          </div>
+          <div class="field md:col-4 sm:col-12">
+            <label for="url">URL</label>
+            <p-inputGroup class="p-inputtext-sm">
+              <input id="url" formControlName="url" name="url" type="text" pInputText class="p-inputtext-sm"/>
+              <p-button type="button" [icon]="disableCategoryUrl() ? 'pi pi-pencil' : 'pi pi-check'" size="small" [class]="disableCategoryUrl() ? '' : 'p-button-success'" (onClick)="toggleEditCategoryUrl()"></p-button>
+            </p-inputGroup>
+          </div>
+          <div class="field md:col-4 sm:col-12">
+            <label for="parentCategory" class="block mb-2">Parent Category</label>
+            <p-autoComplete id="parentCategory"
+                            formControlName="parentCategory" class="p-inputtext-sm" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" [suggestions]="filteredParentCategory()"
+                            (completeMethod)="filterParentCategory($event)" field="name"
+            />
+          </div>
+          <div class="field md:col-4 sm:col-12">
+            <label for="activeStartDate" class="block mb-2">Active StartDate</label>
+            <p-calendar id="activeStartDate" name="activeStartDate" appendTo="body" showSeconds="true" class="p-inputtext-sm"
+                        inputId="activeStartDate"
+                        formControlName="activeStartDate" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+                        [showTime]="true" dateFormat="dd/mm/yy"
+                        [hourFormat]="'24'"/>
+          </div>
+          <div class="field md:col-4 sm:col-12">
+            <label for="activeEndDate" class="block mb-2">Active EndDate</label>
+            <p-calendar id="activeEndDate" name="activeEndDate" appendTo="body" showSeconds="true" class="p-inputtext-sm"
+                        inputId="activeEndDate" dateFormat="dd/mm/yy"
+                        formControlName="activeEndDate" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+                        [showTime]="true"
+                        [hourFormat]="'24'"/>
+          </div>
+          <div class="field md:col-4 sm:col-12">
+            <label for="description">Description</label>
+            <input id="description" formControlName="description" name="description"  type="text" pInputText class="p-inputtext-sm text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+          </div>
+          <div class="field md:col-4 sm:col-12">
+            <label for="metaTitle">Meta Title</label>
+            <input id="metaTitle" formControlName="metaTitle" name="metaTitle"  type="text" pInputText class="p-inputtext-sm text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+          </div>
+          <div class="field md:col-4 sm:col-12">
+            <label for="metaDescription">Meta Description</label>
+            <input id="metaDescription" formControlName="metaDescription" name="metaDescription"  type="text" pInputText class="p-inputtext-sm text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+          </div>
+        </div>
+      </form>
+    </p-card>
+  } @else {
+
+  }
+}
+<p-toast/>
+

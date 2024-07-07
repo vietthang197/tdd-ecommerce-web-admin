@@ -5,6 +5,7 @@ import { AdminComponent } from './admin.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import {} from "@angular/common/http";
 import {MenuModule} from "primeng/menu";
+import { EditCategoryComponent } from './product-category/edit-category/edit-category.component';
 
 
 @NgModule({
