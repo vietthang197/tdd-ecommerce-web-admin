@@ -20,6 +20,9 @@ import {Utilities} from "../../../utilities/utilities";
 import {ErrorCode} from "../../../utilities/error-code";
 import moment from "moment";
 import {sign} from "chart.js/helpers";
+import {TableModule} from "primeng/table";
+import {CategoryAttributeDto} from "../../../dto/category-attribute-dto";
+import {DialogModule} from "primeng/dialog";
 
 @Component({
   selector: 'app-edit-category',
@@ -35,7 +38,9 @@ import {sign} from "chart.js/helpers";
     CalendarModule,
     InputGroupModule,
     InputTextModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TableModule,
+    DialogModule
   ],
   providers: [MessageService]
 })
@@ -68,8 +73,12 @@ export class EditCategoryComponent implements OnInit{
   });
 
   filteredParentCategory: WritableSignal<any[]> = signal([]);
-  allProductCategory: ProductCategoryDto[] | null = [];
+  allProductCategory:WritableSignal<ProductCategoryDto[]> = signal([]);
+  showDialogCreateCategoryAttribute = signal(false);
 
+  // category attributes
+  categoryAttributes: Map<string, string> = new Map<string, string>();
+  tableAttributes:WritableSignal<CategoryAttributeDto[]> = signal([]);
   async ngOnInit(): Promise<void> {
 
     this.productCategoryFormGroup.controls['name'].valueChanges.subscribe(value => {
@@ -156,14 +165,15 @@ export class EditCategoryComponent implements OnInit{
     let filtered: any[] = [];
     let query = event.query;
 
-    for (let i = 0; i < (this.allProductCategory as any[]).length; i++) {
-      let categoryItem = (this.allProductCategory as any[])[i];
+    for (let i = 0; i < (this.allProductCategory() as any[]).length; i++) {
+      let categoryItem = (this.allProductCategory() as any[])[i];
       if (categoryItem.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
         filtered.push(categoryItem);
       }
     }
 
     this.filteredParentCategory.set(filtered);
+    // this.productCategoryFormGroup.ad
   }
 
   toggleEditCategoryUrl() {
@@ -174,5 +184,18 @@ export class EditCategoryComponent implements OnInit{
       this.productCategoryFormGroup.controls['url'].disable();
       this.disableCategoryUrl.set(true);
     }
+  }
+
+  openDialogAddCategoryAttributes() {
+    this.showDialogCreateCategoryAttribute.set(true)
+  }
+
+  closeCategoryAttributeDialog($event: MouseEvent) {
+    $event.stopPropagation();
+    this.showDialogCreateCategoryAttribute.set(false);
+  }
+
+  saveCategoryAttribute() {
+
   }
 }
