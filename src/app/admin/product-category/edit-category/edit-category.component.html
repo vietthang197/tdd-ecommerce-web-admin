@@ -7,7 +7,7 @@
 } @else {
   @if(canEditCategory()) {
     <p-card header="Detail Product Category">
-      <p-button icon="pi pi-undo" label="Quay lại" size="small" (onClick)="backAllCategoryPage($event)"/>
+      <p-button icon="pi pi-undo" label="Back" size="small" (onClick)="backAllCategoryPage($event)"/>
       <p-button icon="pi pi-arrow-down" label="Update" size="small" severity="success"  class="ml-2" [loading]="loadingUpdateCategory()" (onClick)="updateCategory($event)"/>
     </p-card>
 
