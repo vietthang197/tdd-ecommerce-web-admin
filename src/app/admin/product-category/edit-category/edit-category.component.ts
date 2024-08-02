@@ -181,7 +181,12 @@ export class EditCategoryComponent implements OnInit {
                   (item.categoryId == categoryDto?.parentCategory.categoryId)));
               }
             }, error: err => {
-
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Error fetch category'
+              })
+              this.loadingDetail.set(false);
             }, complete: () => {
               this.loadingDetail.set(false);
             }
@@ -190,6 +195,7 @@ export class EditCategoryComponent implements OnInit {
       }, error: err => {
         this.loadingDetail.set(false);
       }, complete: () => {
+        this.loadingDetail.set(false);
       }
     })
   }
@@ -328,6 +334,7 @@ export class EditCategoryComponent implements OnInit {
         this.loadingUpdateCategory.set(false);
       },
       error: err => {
+        this.loadingUpdateCategory.set(false);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',

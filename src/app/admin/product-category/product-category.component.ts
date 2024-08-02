@@ -111,9 +111,16 @@ export class ProductCategoryComponent implements OnInit {
 
   getListProductCategory(first: number, rows: number) {
     this.productCategoryService.getCategoryList(first, rows).subscribe(value => {
-      this.categoryList.set(value.data.content);
-      this.totalRecords.set(value.data.totalElements);
-    })
+        this.categoryList.set(value.data.content);
+        this.totalRecords.set(value.data.totalElements);
+      },
+      error => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Fetch category error'
+        })
+      });
   }
 
   onPageChange(e: PaginatorState) {
@@ -200,7 +207,12 @@ export class ProductCategoryComponent implements OnInit {
         this.allProductCategory = value.data;
       },
       error: (error) => {
-
+        this.loadingPreCreate.set(false);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Fetch Category Error'
+        })
       }, complete: () => {
         this.loadingPreCreate.set(false);
       }
